@@ -32,11 +32,10 @@ class LongOnlyTrader():
         if self.bar_length in self.available_intervals:
             self.twm.start_kline_socket(callback = self.stream_candles,
                                         symbol = self.symbol, interval = self.bar_length)
-        # "else" to be added later in the course 
+      
     
     def stream_candles(self, msg):
         
-        # extract the required items from msg
         event_time = pd.to_datetime(msg["E"], unit = "ms")
         start_time = pd.to_datetime(msg["k"]["t"], unit = "ms")
         first   = float(msg["k"]["o"])
@@ -46,10 +45,10 @@ class LongOnlyTrader():
         volume  = float(msg["k"]["v"])
         complete=       msg["k"]["x"]
     
-        # print out
+   
         print("Time: {} | Price: {}".format(event_time, close))
     
-        # feed df (add new bar / update latest bar)
+       
         self.data.loc[start_time] = [first, high, low, close, volume, complete]
 
 trader = LongOnlyTrader(symbol=symbol, bar_length="1m")
